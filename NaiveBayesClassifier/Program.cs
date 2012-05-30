@@ -8,7 +8,7 @@ namespace NaiveBayesClassifier
 {
      class Program
      {    
-          private const string OUTPUT_FILE = "output.txt";
+          private const string OUTPUT_FILE = "output.csv";
           static string stoplist;
           static string trainingData;
           static string trainingLabel;
