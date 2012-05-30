@@ -7,15 +7,16 @@ using System.IO;
 namespace NaiveBayesClassifier
 {
      class Program
-     {
+     {    
+          private const string OUTPUT_FILE = "output.txt";
+          static string stoplist;
+          static string trainingData;
+          static string trainingLabel;
+          static string testingData;
+          static string testingLabel;
+
           static void Main(string[] args)
           {
-               string stoplist;
-               string trainingData;
-               string trainingLabel;
-               string testingData;
-               string testingLabel;
-
                try
                {
                     foreach (var file in args)
@@ -38,6 +39,11 @@ namespace NaiveBayesClassifier
                     Console.WriteLine(e.Message);
                     exit();
                }
+
+               var preProcessor = new PreProcessor(trainingData, stoplist);
+               var trainingFeatures = preProcessor.GenerateAndPrintFeatures(trainingData, trainingLabel, OUTPUT_FILE);
+
+
           }
 
           private static void exit()

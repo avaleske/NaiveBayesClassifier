@@ -10,10 +10,10 @@ namespace NaiveBayesClassifier
      {
           SortedSet<string> vocabulary = new SortedSet<string>();
           SortedSet<string> stopList = new SortedSet<string>();
+          List<int[]> features = new List<int[]>();
 
-          public void GenerateVocabulary(string sourceFileName, string stopListFileName)
+          public PreProcessor(string vocabularyFileName, string stopListFileName)
           {
-               
                using (var stopListFile = new StreamReader(stopListFileName))
                {
                     string line;
@@ -23,7 +23,7 @@ namespace NaiveBayesClassifier
                     }
                }
 
-               using (var sourceFile = new StreamReader(sourceFileName))
+               using (var sourceFile = new StreamReader(vocabularyFileName))
                {
                     string line;
                     while((line = sourceFile.ReadLine()) != null)
@@ -39,6 +39,31 @@ namespace NaiveBayesClassifier
                          }
                     }
                }
+          }
+
+          public List<int[]> GenerateAndPrintFeatures(string trainingDataFileName, string trainingLabelFileName, string featureOutputFile)
+          {
+               var generator = new FeatureGenerator(vocabulary.ToList<string>());
+               features = generator.GenerateAllFeatures(trainingDataFileName, trainingLabelFileName);
+
+               //print
+               using (var outFile = new StreamWriter(featureOutputFile))
+               {
+                    foreach (var word in vocabulary)
+                    {
+                         outFile.Write("{0}, ", word);
+                    }
+                    outFile.WriteLine();
+                    foreach (var feature in features)
+                    {
+                         foreach (var value in feature)
+                         {
+                              outFile.Write("{0}, ", value);
+                         }
+                         outFile.WriteLine();
+                    }
+               }
+               return features;
           }
      }
 }
