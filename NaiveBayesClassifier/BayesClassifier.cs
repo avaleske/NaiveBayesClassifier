@@ -59,7 +59,8 @@ namespace NaiveBayesClassifier
                     double fortune = Math.Log(learnedData[1,classIndex]);
                     double notFortune = Math.Log(learnedData[0, classIndex]);
                     
-                    //P(class | p1, p2, ... pn) = aP(class)P(p1|class)P(p2|class)...
+                    //P(class | p1, p2, ... pn) = aP(class)P(p1|class)P(p2|class)... a is ignored as both
+                    //the fortune and the notFortune would have it.
                     //Using sums and logs to account for instability of small floating points
                     //If we want the probability a paramater's false, subract that it's true from 1
                     for (int i = 0; i < parameterCount; i++)
