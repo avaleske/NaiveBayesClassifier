@@ -63,5 +63,26 @@ namespace NaiveBayesClassifier
                }
                return features;
           }
+
+          public double CheckClassificationAccuracy(List<int[]> features, string testLabelFileName)
+          {
+               double percentCorrect = 0;
+               using (var labelFile = new StreamReader(testLabelFileName))
+               {
+                    string line;
+                    int index = 0;
+                    int numCorrect = 0;
+                    while ((line = labelFile.ReadLine()) != null && index < features.Count)
+                    {
+                         if (features[index][classIndex] == int.Parse(line.Trim()))
+                         {
+                              numCorrect++;
+                         }
+                         index++;
+                    }
+                    percentCorrect = (numCorrect / (double)features.Count) * 100;
+               }
+               return percentCorrect;
+          }
      }
 }

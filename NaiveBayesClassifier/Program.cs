@@ -44,9 +44,10 @@ namespace NaiveBayesClassifier
                var trainingFeatures = preProcessor.GenerateAndPrintFeatures(trainingData, trainingLabel, OUTPUT_FILE);
 
                var classifier = new BayesClassifier(trainingFeatures);
-               classifier.ClassifyFeatureSet(preProcessor.GetVocabulary.ToList<string>(), testingData);
+               var testedFeatures = classifier.ClassifyFeatureSet(preProcessor.GetVocabulary.ToList<string>(), testingData);
 
-
+               Console.WriteLine("It was {0}% accurate", classifier.CheckClassificationAccuracy(testedFeatures, testingLabel));
+               exit();
           }
 
           private static void exit()

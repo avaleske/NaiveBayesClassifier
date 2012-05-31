@@ -55,7 +55,7 @@ namespace NaiveBayesClassifier
                          int index = 0;
                          while ((line = labelFile.ReadLine()) != null)
                          {
-                              //last index of every feature is the label
+                              //last index of every feature is the class label
                               features[index][vocabulary.Count] = int.Parse(line.Trim());
                               index++;
                          }
