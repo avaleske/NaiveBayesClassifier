@@ -10,19 +10,18 @@ namespace NaiveBayesClassifier
      {
           private bool trained = false;
           private double[,] learnedData; // [0,i] is class == false, [1,i] is true.
-          int featureCount;
-          int trueClassFeatureCount;
           int parameterCount;
+          int classIndex;
 
           public bool IsTrained { get { return trained; } }
 
           public BayesClassifier(List<int[]> trainingFeatures)
           {
-               featureCount = trainingFeatures.Count;
+               int featureCount = trainingFeatures.Count;
                parameterCount = trainingFeatures[0].Length - 1;
-               int classIndex = parameterCount;
+               classIndex = parameterCount;
                //count where last column of feature, if fortune or not, is 1.
-               trueClassFeatureCount = trainingFeatures.Count(f => f[classIndex] == 1);
+               int trueClassFeatureCount = trainingFeatures.Count(f => f[classIndex] == 1);
                learnedData = new double[2, parameterCount + 1];
                
                //Add 1 to act as a Dirichlet Prior
@@ -31,13 +30,38 @@ namespace NaiveBayesClassifier
 
                for (int i = 0; i < parameterCount; i++)
                {
-                    //i is the parameter index, parameterCount - 1 is the class variable index
                     int trueCount = trainingFeatures.Count(f => (f[i] == 1) && (f[classIndex] == 1));
                     int falseCount = trainingFeatures.Count(f => (f[i] == 1) && (f[classIndex] == 0));
                     
                     learnedData[0, i] = (falseCount + 1) / (double)(featureCount - trueClassFeatureCount);
                     learnedData[1, i] = (trueCount + 1) / (double)trueClassFeatureCount;
                }
+               trained = true;
+          }
+
+          public List<int[]> ClassifyFeatureSet(List<string> vocabulary, string testDataFileName)
+          {
+               if (trained == false)
+               {
+                    throw new Exception("The classifier must be trained before attempting to classify a feature set.");
+               }
+
+               var generator = new FeatureGenerator(vocabulary);
+               var features = generator.GenerateAllFeatures(testDataFileName);
+
+               foreach (var feature in features)
+               {
+                    double fortune = Math.Log(learnedData[1,classIndex]);
+                    double notFortune = Math.Log(learnedData[0, classIndex]);
+                    
+                    for (int i = 0; i < parameterCount; i++)
+                    {
+                         fortune += Math.Log((feature[i] == 1) ? learnedData[1,i] : 1 - learnedData[1,i]);
+                         notFortune += Math.Log((feature[i] == 1) ? learnedData[0, i] : 1 - learnedData[0, i]);
+                    }
+                    feature[classIndex] = (fortune > notFortune) ? 1 : 0;
+               }
+               return features;
           }
      }
 }
