@@ -12,6 +12,8 @@ namespace NaiveBayesClassifier
           SortedSet<string> stopList = new SortedSet<string>();
           List<int[]> features = new List<int[]>();
 
+          public SortedSet<string> GetVocabulary { get { return vocabulary; } }
+
           public PreProcessor(string vocabularyFileName, string stopListFileName)
           {
                using (var stopListFile = new StreamReader(stopListFileName))

@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BayesClassifier.cs" />
     <Compile Include="FeatureGenerator.cs" />
     <Compile Include="PreProcessor.cs" />
     <Compile Include="Program.cs" />
