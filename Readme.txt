@@ -1,4 +1,5 @@
 Austin Valeske 5/31/12
+
 This is a Naive Bayes Classifier for my Intro AI class.
 It classifies a string from a fortune cookie as either a fortune or a wise saying, given an input of already classified phrases.
 
