@@ -3,7 +3,7 @@ Austin Valeske 5/31/12
 This is a Naive Bayes Classifier for my Intro AI class.
 It classifies a string from a fortune cookie as either a fortune or a wise saying, given an input of already classified phrases.
 
-As input, it takes <stoplist file> <training data file> <training label file> <testing data file> <testing label file>
+As input, it takes "<stoplist file> <training data file> <training label file> <testing data file> <testing label file>"
 Examples of these files are in the data folder of the project.
 
 It also doesn't do any checking of the files to ensure they're in the correct format, it's more of a proof of concept than anything. It's not terribly well encapsulated, either, as it passes the a reference to the same vocabulary around for a bit...
