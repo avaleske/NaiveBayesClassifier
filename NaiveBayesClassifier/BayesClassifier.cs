@@ -9,8 +9,9 @@ namespace NaiveBayesClassifier
      class BayesClassifier
      {
           private bool trained = false;
-          private double[] learnedData;
+          private double[,] learnedData; // [0,i] is class == false, [1,i] is true.
           int featureCount;
+          int trueClassFeatureCount;
           int parameterCount;
 
           public bool IsTrained { get { return trained; } }
@@ -18,11 +19,25 @@ namespace NaiveBayesClassifier
           public BayesClassifier(List<int[]> trainingFeatures)
           {
                featureCount = trainingFeatures.Count;
-               parameterCount = trainingFeatures[0].Length;
-               learnedData = new double[parameterCount];
+               parameterCount = trainingFeatures[0].Length - 1;
+               int classIndex = parameterCount;
+               //count where last column of feature, if fortune or not, is 1.
+               trueClassFeatureCount = trainingFeatures.Count(f => f[classIndex] == 1);
+               learnedData = new double[2, parameterCount + 1];
                
-               //count where last column, if fortune or not, is 1, and add 1 to act as a Dirichlet Prior.
-               learnedData[parameterCount - 1] = (trainingFeatures.Count(f => f[parameterCount - 1] == 1) + 1) / (double)featureCount;
+               //Add 1 to act as a Dirichlet Prior
+               learnedData[1, classIndex] = (trueClassFeatureCount + 1) / (double)featureCount;
+               learnedData[0, classIndex] = (featureCount - trueClassFeatureCount + 1) / (double)featureCount;
+
+               for (int i = 0; i < parameterCount; i++)
+               {
+                    //i is the parameter index, parameterCount - 1 is the class variable index
+                    int trueCount = trainingFeatures.Count(f => (f[i] == 1) && (f[classIndex] == 1));
+                    int falseCount = trainingFeatures.Count(f => (f[i] == 1) && (f[classIndex] == 0));
+                    
+                    learnedData[0, i] = (falseCount + 1) / (double)(featureCount - trueClassFeatureCount);
+                    learnedData[1, i] = (trueCount + 1) / (double)trueClassFeatureCount;
+               }
           }
      }
 }
