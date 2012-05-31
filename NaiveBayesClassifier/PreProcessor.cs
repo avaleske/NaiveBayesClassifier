@@ -16,6 +16,7 @@ namespace NaiveBayesClassifier
 
           public PreProcessor(string vocabularyFileName, string stopListFileName)
           {
+               //build vocabulary, sans stop words
                using (var stopListFile = new StreamReader(stopListFileName))
                {
                     string line;

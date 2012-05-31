@@ -19,7 +19,7 @@ namespace NaiveBayesClassifier
           {
                var parts = phrase.Trim().ToLower().Split(' ');
                var union = vocabulary.Intersect(parts);
-               int[] feature = new int[vocabulary.Count + 1];
+               int[] feature = new int[vocabulary.Count + 1]; //+1 for class variable
                foreach (var word in union.OrderBy(word => word))
                {
                     int index;
@@ -47,7 +47,7 @@ namespace NaiveBayesClassifier
                          features.Add(GenerateFeature(line));
                     }
                }
-               if (labelFileName != null)
+               if (labelFileName != null) //add class variable if provided
                {
                     using(var labelFile = new StreamReader(labelFileName))
                     {
