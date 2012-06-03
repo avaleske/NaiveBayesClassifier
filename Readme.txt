@@ -15,3 +15,7 @@ The training data is converted to features, and the in a seperate array the prob
 The words to be classified are then also converted to features, and the logs of each of the probabilities that a word does or does not appear, given that it is or is not a fortune, are added up. This is preferable to multipling the probabilities together, as floating points are unstable for small values. The larger of the two, fortune or not fortune, is determined to be the more likely result.
 
 So yeah, simple project, I haven't yet taken the time to clean it up much, though.
+Here's the assignment:
+http://dft.ba/-2KJH
+And the relevant powerpoint:
+http://dft.ba/-2KJI
